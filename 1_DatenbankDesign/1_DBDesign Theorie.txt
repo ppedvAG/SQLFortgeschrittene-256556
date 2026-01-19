@@ -1,0 +1,43 @@
+1. Das Entity-Relationship-Modell (ERM)
+Bevor die Datenbank technisch erstellt wird, plant man die Struktur meist grafisch.
+
+Entitäten: Objekte oder Konzepte (z. B. "Kunde", "Produkt").
+Attribute: Eigenschaften dieser Objekte (z. B. "Name", "Preis").
+Beziehungen: Wie die Objekte miteinander verbunden sind (z. B. "Kunde kauft Produkt").
+
+2. Normalisierung
+Die Normalisierung ist ein Prozess, um Redundanzen (doppelte Daten) zu vermeiden 
+und Datenanomalien zu verhindern. Man unterteilt Daten in mehrere Tabellen und 
+verknüpft diese. Die gängigsten Stufen sind:
+
+1. Normalform: Jedes Feld enthält nur einen Wert (Atomarität).
+2. Normalform: Alle Nicht-Schlüsselattribute hängen voll vom Primärschlüssel ab.
+3. Normalform: Es gibt keine transitiven Abhängigkeiten (keine Abhängigkeiten zwischen Nicht-Schlüsselattributen).
+
+3. Primär- und Fremdschlüssel
+Diese Konzepte stellen die Verknüpfung und Identifikation sicher:
+Primärschlüssel (Primary Key): Ein eindeutiger Identifikator für jeden Datensatz in einer Tabelle (z. B. eine Kundennummer).
+Fremdschlüssel (Foreign Key): Ein Feld in einer Tabelle, das auf den Primärschlüssel einer anderen Tabelle verweist,
+ um eine Beziehung herzustellen.
+
+4. Beziehungstypen
+Wie hängen die Datenmengen zusammen? 
+1:1: Ein Datensatz in Tabelle A gehört zu genau einem in Tabelle B (z. B. Person und Personalausweis).
+1:n: Ein Datensatz in A kann viele in B haben (z. B. ein Kunde hat viele Bestellungen).
+n:m: Viele Datensätze in A sind mit vielen in B verknüpft (z. B. Studenten und Kurse). 
+Dies wird technisch meist über eine Zwischentabelle gelöst.
+
+5. Datenintegrität
+Hierbei geht es um die Korrektheit der Daten:
+
+Referenzielle Integrität: 
+Stellt sicher, dass Fremdschlüssel immer auf existierende Primärschlüssel verweisen. 
+Man kann z. B. keinen Kunden löschen, der noch offene Bestellungen hat.
+Zusammenfassung der EntwurfsphasenPhaseZielAnforderungsanalyseWas muss gespeichert werden?
+
+Redundanz
+
+absichtliche Herbeiführung von Redundanz zur Performanceoptimierung
+
+1. bei großen Datenmengen Vermeiden Joins
+2. Historisierung (zb Preis)

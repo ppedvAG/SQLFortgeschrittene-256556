@@ -1,0 +1,33 @@
+Datentypen
+
+1. Performance
+effizienter, wenn Datentypen kleiner
+
+--> Indizes auf int sind schneller als auf NCHAR(255). 
+Je geringer der Platzbedarf, desto geringer auch der Speichverbrauch.
+Das Durchlaufen der Baumstruktur kann ebenfalls schneller sein, da der Index evtl eine geringere
+Anzahl an Ebene besitzt.
+
+2. Datenqualität
+DATE akzeptiert kein 31.2
+FLOAT oder DECIMAL vermeiden Rundungsfehler
+
+Sortierfehler
+Zahlen als text werden anders sortiert
+
+Vorsicht bei diesen Datentypen
+
+DECIMAL(19,2) bei Währung, Gewicht oder Maße
+speichert als ganze Zahl und denkt sich das Komma dazu
+
+FLOAT bei wissenschaftlichen Berechnung, wo die 15te Stelle hinter dem Komma egal sein wird
+..ebnsteht durch Summierung von Zweierpotenzen
+
+MONEY (4Stellen hinter dem Komma)  kann bei Berechnung (zinsesZins) zu falschen Ergebnissen führen, 
+da Rundungsfehler in den Zwischenschritten entstehen können
+
+
+Wähle den passenden Datentyp. Nicht zu gr0ß und nicht klein.
+Wähle mit Bedacht, ob text UNICODE sein muss. (N'Typen)
+
+UNICODE: Was geht über den ASCI Zeichensatz hinaus (UTF-16). Benötigt doppelte Menge
