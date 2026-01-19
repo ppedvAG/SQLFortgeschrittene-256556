@@ -5,6 +5,6 @@ KursRepository zu Kurs SQL - Datenbanksprache und Fortgeschrittene Techniken der
 
 
 
-# DB Design
+### DB Design
 
-# Partitionierung
+### Partitionierung
