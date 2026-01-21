@@ -1,0 +1,48 @@
+Die Snapshot Isolation (Momentaufnahme-Isolation) im SQL Server ist eine Methode, um die Nebenläufigkeit (Concurrency) in Datenbanken zu verbessern.
+
+Einfach ausgedrückt sorgt sie dafür, dass lesende Abfragen (Reader) keine schreibenden Abfragen (Writer) blockieren und umgekehrt.
+
+Hier ist eine detaillierte, aber verständliche Erklärung, wie das funktioniert und was es bringt.
+
+Das Kernproblem: Das klassische "Locking"
+Normalerweise (im Standard-Modus READ COMMITTED) verwendet SQL Server Sperren (Locks):
+
+Wenn Sie eine Zeile ändern (Update), wird diese gesperrt.
+
+Wenn jemand anderes diese Zeile gleichzeitig lesen will, muss er warten, bis Ihre Änderung fertig (committed) ist.
+
+Das führt zu Wartezeiten (Blocking) und potenziell zu Deadlocks.
+
+Die Lösung: Snapshot Isolation (Row Versioning)
+Bei der Snapshot Isolation nutzt SQL Server keine Lesesperren. Stattdessen verwendet er Row Versioning (Zeilenversionierung).
+
+So funktioniert der Ablauf:
+
+Änderung: Wenn eine Transaktion eine Zeile ändert, überschreibt SQL Server die Daten nicht einfach nur. Er kopiert die alte Version der Zeile (wie sie vor der Änderung aussah) in die tempdb.
+
+Versionierung: Die aktuelle Zeile erhält einen Zeiger auf diese alte Version in der tempdb.
+
+Lesen: Wenn nun eine andere Transaktion diese Zeile lesen will, während sie gerade geändert wird, muss sie nicht warten. Sie greift einfach auf die alte Version in der tempdb zu.
+
+Das Ergebnis: Der Leser sieht die Daten genau so, wie sie zum Startzeitpunkt seiner Transaktion (oder seines Statements) aussahen – wie auf einem Foto (Snapshot).
+
+Die zwei Varianten der Snapshot Isolation
+Es ist wichtig zu verstehen, dass es im SQL Server zwei Arten gibt, diese Technik zu nutzen. Man muss sie auf Datenbankebene aktivieren:
+
+1. Read Committed Snapshot Isolation (RCSI)
+Aktivierung: ALTER DATABASE [DB] SET READ_COMMITTED_SNAPSHOT ON
+
+Verhalten: Dies ändert das Standardverhalten von READ COMMITTED. Anwendungen müssen ihren Code nicht ändern.
+
+Snapshot-Zeitpunkt: Jeder einzelne Befehl (Statement) sieht die Daten so, wie sie zum Start dieses Befehls waren.
+
+Einsatz: Dies ist der Standard in Azure SQL Database und wird oft für moderne Webanwendungen empfohlen, um Blocking zu minimieren.
+
+2. "Echte" Snapshot Isolation
+Aktivierung: ALTER DATABASE [DB] SET ALLOW_SNAPSHOT_ISOLATION ON
+
+Verwendung: Sie müssen explizit SET TRANSACTION ISOLATION LEVEL SNAPSHOT in Ihrer Abfrage/Stored Procedure setzen.
+
+Snapshot-Zeitpunkt: Die Transaktion sieht die Daten so, wie sie zum Start der gesamten Transaktion waren, egal wie lange die Transaktion dauert.
+
+Risiko: Hier kann es zu "Update Conflicts" kommen, wenn zwei Transaktionen versuchen, dieselbe Zeile auf Basis veralteter Daten zu ändern.
